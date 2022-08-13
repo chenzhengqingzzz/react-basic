@@ -1,0 +1,34 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsx小练习</title>
+</head>
+<body>
+    <!-- 准备好一个容器 -->
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        //组件的定义：用来实现局部功能效果的代码和资源的集合
+        //1.创建函数式组件
+            function MyComponent(){
+                //自定义函数里面的this不指向window，这里的undefined是因为调用函数后开启了严格模式
+                console.log(this)//因为babel编译后开启了严格模式
+                return <h2>我是用函数定义的组件（适用于【简单组件】的定义）</h2>
+            }
+        //2.渲染组件到页面
+        ReactDOM.render(<MyComponent></MyComponent>, document.getElementById('test'))
+        /*
+            执行了ReactDOM.render(<component></component>...)之后，发生了甚么？
+                1.React解析组件标签，找到了MyComponent组件
+                2.发现组件是使用函数定义的，随后调用该函数，将返回的虚拟DOM转为真实DOM，随后呈现在页面中
+        */
+    </script>
+</body>
+</html>

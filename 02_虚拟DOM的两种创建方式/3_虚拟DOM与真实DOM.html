@@ -1,0 +1,60 @@
+<!-- 拥有固定模板 -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- 网站标题，通常呈现在浏览器标签页当中 -->
+        <title>3_虚拟DOM与真实DOM</title>
+    </head>
+    <body>
+        <!-- 准备好一个容器 -->
+        <div id = "test"></div>
+        <div id = "demo"></div>
+
+        <!-- 引入react核心库 （有先后顺序 先引入核心库再引入周边库）-->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入react-dom，用于支持react操作DOM -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将.jsx转化为.js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <!-- 写babel表示下面的中间写的不再是js，而是jsx，通过babel来转化 -->
+        <script type="text/babel">/* 此处一定要写babel */
+
+        //1.创建虚拟DOM
+        //在原生js里面，<h1>里面的东西是一个html字符串，得加单引号
+        //但这里是jsx，千万不要加单引号
+        //其中h1为标签名，id='title'为标签属性，Hello,React为标签内容
+        const VDOM = ( /* 此Hello,React一定不要写引号，因为不是字符串 */
+            <h1 id='title'>
+                <span>Hello,React</span>
+            </h1> )/* 此处一定不要写引号，因为不是字符串 */
+        //如果加了这个语句，就会发现先前的Hello,React被替换成了SaBi，这证明这两个语句没有追加关系，只有替换关系
+        //const VDOM2 = <h1>SaBi</h1>
+        //2.渲染虚拟DOM到页面
+        //render()里面传的参数 render(虚拟DOM, 容器)
+        //注意区分大小写
+        ReactDOM.render(VDOM, document.getElementById('test'))
+        //如果加了这个语句，就会发现先前的Hello,React被替换成了SaBi，这证明这两个语句没有追加关系，只有替换关系
+        //ReacrDOM.render(VDOM2, document.getElementById('test'))
+
+        console.log("虚拟DOM", VDOM);
+        const TDOM = document.getElementById('demo')
+        console.log("真实DOM", TDOM)
+        /* 如果仅凭上面的语法输出真是DOM，浏览器则会直接将其类型显示为标签。根本看不见任何东西
+         * 所以我们选择使用debug
+         */
+        debugger;
+        
+        // console.log(typeof VDOM);
+        // console.log(VDOM instanceof Object);
+        /*
+            关于虚拟DOM：
+                1.本质是Object类型的对象（一般对象）
+                2.虚拟DOM比较“轻”，真是DOM比较“重”，因为虚拟DOM是React内部在用，无需真实DOM上那么多的属性
+                3.虚拟DOM最终会被React转化为真是DOM，呈现在页面上
+        */
+
+        </script>
+    </body>
+</html>
