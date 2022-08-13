@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1_高阶函数_函数柯里化</title>
+</head>
+<body>
+    <!-- 准备好一个容器 -->
+    <div id = "test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        /*
+            高阶函数：如果一个函数复合下面两个规范中的任何一个，那么该函数就是高阶函数
+                    1.若A函数，接收的参数是一个函数，那么A就可以称之为高阶函数
+                    2.若A函数，调用的返回值依然是一个函数，那么A就可以称之为高阶函数
+                    常见的高阶函数有：Promise、setTimeout、arr.map()...
+
+            函数的柯里化：通过函数调用继续返回函数的方式，实现多次接收参数最后统一处理的函数编码形式
+                使用柯里化：
+                function sum(a){
+                    return(b) => {
+                        return(c) => {
+                            a + b + c
+                        }
+                    }
+                }  
+        */
+
+        //创建组件
+        class Login extends React.Component{
+
+            //初始化状态
+            state = {username: 'null', password: 'NaN'}
+
+            //保存表单数据到状态中
+            saveFormData = (dataType) => {
+                //把saveFormData这个函数的返回值所返回的那个函数交给了onChange作为回调(这里把函数当成返回值)
+                //使用柯里化
+                return (event) => {
+                    //将dataType中的数据拿来放给指定项（如username，password），则要将dataType加中括号，否则则会新建dataType项
+                    this.setState({[dataType]: event.target.value})
+                }
+            }
+
+            //表单提交的回调
+            handleSubmit = (event) => {
+                event.preventDefault() //阻止默认事件(表单提交)
+                const {username, password} = this.state
+                //此时拿到的是真正存在state中的值，而不是节点，是节点就得.value（参考非受控组件）
+                alert(`你输入的用户名是: ${username},你输入的密码是: ${password}`)
+            }
+
+            render(){
+                return(
+                    //form表单默认发出GET请求 可在后面添加query参数 表单里面有一个事件：onSubmit(当表单提交的时候)
+                    <form action="http://www.atguigu.com" onSubmit={this.handleSubmit}>
+                        {/* 如果是this.saveFormData，则是把这个函数交给onChange作为回调；如果是this.saveFormData(param)，则是把这个函数的返回值作为onChange的回调，而上面没有为此函数定义返回值，所以此时的回调是undefined */}
+                        {/* 必须把一个函数作为onChange的回调 */}
+                        用户名：<input onChange={this.saveFormData('username')} type="text" name="username"/>
+                        密码：<input onChange={this.saveFormData('password')} type="password" name="password"/>
+                        <button>登录</button>
+                    </form>
+                )
+            }
+        }
+        //渲染组件
+        ReactDOM.render(<Login/>, document.getElementById('test'))
+    </script>
+</body>
+</html>
