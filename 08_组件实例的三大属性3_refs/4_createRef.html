@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2_回调函数形式的ref</title>
+    <title>4_createRef</title>
 </head>
 <body>
     <!-- 准备好一个容器 -->
@@ -19,25 +19,32 @@
     <script type="text/babel">
         //创建组件
         class Demo extends React.Component{
+
+            /*
+                React.createRef调用后可以返回一个容器，该容器可以存储被ref所标识的节点，该容器是“专人专用”的
+            */
+           //创建容器挂在了实例自身上起了名字叫myRef
+            myRef = React.createRef()
+            myRef2 = React.createRef()
+
             //展示左侧输入框的数据
             showData = () => {
                 //结构赋值的形式
                 //此时input1在实例自身
-                const {input1} = this
-                alert(input1.value)
+               alert(this.myRef.current.value);
             }
             //展示右侧输入框的数据
             showData2 = () => {
-                const {input2} = this
-                alert(input2.value)
+                console.log(this);
+                alert(this.myRef2.current.value)
             }
             render(){
                 return(
                     /* div标签里第一行代码的意思：把节点放在了组件实例自身上，然后给它起名：input1 */
                     <div>
-                        <input ref={(currentNode) => {this.input1 = currentNode}} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                        <input ref={this.myRef} type="text" placeholder="点击按钮提示数据"/>&nbsp;
                         <button onClick={this.showData}>点我提示左侧的数据</button>&nbsp;
-                        <input ref={((currentNode) => {this.input2 = currentNode})} onBlur={this.showData2} type="text" placeholder="失去焦点提示数据"/>
+                        <input ref={this.myRef2} onBlur={this.showData2} type="text" placeholder="失去焦点提示数据"/>&nbsp;
                     </div>
                 )
             }

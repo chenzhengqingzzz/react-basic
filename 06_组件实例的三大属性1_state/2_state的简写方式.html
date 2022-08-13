@@ -40,7 +40,10 @@
             //箭头函数里面没有自己的this
             //如果在箭头函数里面使用了this，它就会找其外层函数的this作为自己的this
             changeWeather = () => {
+                //从this.state身上取isHot
+                // const {isHot} = this.state
                 const isHot = this.state.isHot
+                //更新状态
                 this.setState({isHot: !isHot})
             }
         }
