@@ -1,0 +1,50 @@
+<!-- 拥有固定模板 -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- 网站标题，通常呈现在浏览器标签页当中 -->
+        <title>1_验证Diffing算法</title>
+    </head>
+    <body>
+        <!-- 准备好一个容器 -->
+        <div id = "test"></div>
+
+        <!-- 引入react核心库 （有先后顺序 先引入核心库再引入周边库）-->
+        <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+        <!-- 引入react-dom，用于支持react操作DOM -->
+        <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+        <!-- 引入babel，用于将.jsx转化为.js -->
+        <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+        <!-- 写babel表示下面的中间写的不再是js，而是jsx，通过babel来转化 -->
+        <script type="text/babel">/* 此处一定要写babel */
+
+            class Time extends React.Component{
+
+                state = {date: new Date()}
+
+                componentDidMount(){
+                    setInterval(() => {
+                        this.setState({
+                            date: new Date()
+                        })
+                    }, 1000)
+                }
+
+                render(){
+                    return (
+                        <div>
+                            <h1>hello</h1>
+                            <input type="text"/>
+                            <span>现在是：{this.state.date.toTimeString()}</span>
+                        </div>
+                    )
+                }
+            }
+
+            ReactDOM.render(<Time/>, document.getElementById('test'))
+
+        </script>
+    </body>
+</html>
