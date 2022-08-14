@@ -1,0 +1,76 @@
+<!-- 拥有固定模板 -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- 网站标题，通常呈现在浏览器标签页当中 -->
+        <title>1_引出生命周期</title>
+    </head>
+    <body>
+        <!-- 准备好一个容器 -->
+        <div id = "test"></div>
+
+        <!-- 引入react核心库 （有先后顺序 先引入核心库再引入周边库）-->
+        <script type="text/javascript" src="../js/react.development.js"></script>
+        <!-- 引入react-dom，用于支持react操作DOM -->
+        <script type="text/javascript" src="../js/react-dom.development.js"></script>
+        <!-- 引入babel，用于将.jsx转化为.js -->
+        <script type="text/javascript" src="../js/babel.min.js"></script>
+
+        <!-- 写babel表示下面的中间写的不再是js，而是jsx，通过babel来转化 -->
+        <script type="text/babel">/* 此处一定要写babel */
+
+            //创建组件
+            //生命周期回调函数 <=> 声明周期钩子函数 <=> 生命周期函数 <=> 生命周期钩子
+            class Life extends React.Component{
+                //往状态放不透明度
+                state = {opacity: 1}
+
+                death = () => {
+                    //卸载组件
+                    ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+                }
+
+                //render亲兄弟，组件挂载完毕后调用
+                componentDidMount(){
+                    console.log('@');
+                    //设置定时器
+                    this.timer = setInterval(() => {
+                        //获取原状态
+                        //const声明的变量无法再改 所以得用let
+                        let {opacity} = this.state
+                        //减小0.1
+                        opacity = opacity - 0.1
+                        if(opacity <= 0){
+                            opacity = 1
+                        }
+                        //设置新的透明度，放在状态中
+                        // this.setState({opacity: opacity}) //对象里的key和保存这个key所对应value值的变量同名，可以简写
+                        this.setState({opacity})
+                    }, 200);
+                }            
+
+                //render调用的时机：初始化渲染、状态更新之后
+                render(){
+                    return(
+                        <div>
+                            {/* style用双括号的形式 */}
+                            <h2 style={{opacity: this.state.opacity}}>React学不会怎么办？</h2>
+                            <button onClick={this.death}>不活了</button>
+                        </div>
+                    )
+                }
+
+                //组件将要卸载
+                componentWillUnmount(){
+                    //清除定时器，也可以写在death函数里
+                    clearInterval(this.timer)
+                }
+            }
+
+
+            //渲染组件
+            ReactDOM.render(<Life/>, document.getElementById('test'))
+        </script>
+    </body>
+</html>
