@@ -37,7 +37,11 @@
                         <div>
                             <h1>hello</h1>
                             <input type="text"/>
-                            <span>现在是：{this.state.date.toTimeString()}</span>
+                            {/* diffing的最小单位是标签 */}
+                            <span>
+                                现在是：{this.state.date.toTimeString()} 
+                                <input type="text"/>
+                            </span>
                         </div>
                     )
                 }
